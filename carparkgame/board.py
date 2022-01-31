@@ -22,7 +22,7 @@ class Board(tk.Frame):
 
         self.cars_dict = dict()
 
-        con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
+        con = pg.connect(database='rush_hour', user='postgres', password='******')
         cur = con.cursor()
         cur.execute(f'SELECT * FROM LEVELS WHERE level_num = {level}')
         level_info = cur.fetchone()
