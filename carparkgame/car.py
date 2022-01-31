@@ -2,7 +2,7 @@ from tkinter import messagebox
 
 CAR_COLOR_DICT = {'red': 2, 'purple': 3, 'yellow': 3, 'green': 2, 'blue': 2}
 DIRECTION_DICT = {'Left': 0, 'Down': 1, 'Right': 2, 'Up': 3 }
-
+#make more spacific errors
 class BoardException(BaseException):
     pass
 
