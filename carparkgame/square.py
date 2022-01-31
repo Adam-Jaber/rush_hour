@@ -9,7 +9,7 @@ class Square(tk.Frame):
         self.bind('<Button-1>', self.focus_set)
         #print('created frame')
 
-    def focus_set(self, event):
+    def focus_set(self, event=None):
         super().focus_set()
 
     def paint(self, color):
