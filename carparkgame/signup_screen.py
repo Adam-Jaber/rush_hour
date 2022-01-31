@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-
+import psycopg2 as pg
 
 class SignupScreen(tk.Frame):
     def __init__(self, master):
@@ -33,4 +33,34 @@ class SignupScreen(tk.Frame):
         tk.Label(self, text="Confirm password:").grid(row=5, column=0, pady=40, padx=60)
         tk.Entry(self, textvariable=self.repassword_var, width=40).grid(row=5, colum=1, pady=40, padx=60)
 
-        tk.Button(self, text="Confirm", command=self.checkinfo).grid(row=6, column=0, columnspan=2, pady=60)
+        tk.Button(self, text="Confirm", command=self.check_info).grid(row=6, column=0, columnspan=2, pady=60)
+
+    def check_info(self):
+        con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
+        cur = con.cursor()
+        cur.execute(f'SELECT * FROM users WHERE username = {self.username_var.get()}')
+        try:
+            if not self.f_name_var.get().isalpha():
+                raise game_errors.InvalidFName
+            if not self.l_name_var.get().isalpha():
+                raise game_errors.InvalidLName
+            if len(cur.fetchone()) =! 0:
+                raise game_errors.UsernameExists
+            if self.password_var.get() =! self.repassword_var.get():
+                raise game_errors.PasswordConfirmError
+            SignupScreen.check_password(self.password_var.get())
+        except game_errors.InvalidFName:
+            messagebox.showerror("incorrect info", "first name can only contain letters")
+        except game_errors.InvalidLName:
+            messagebox.showerror("incorrect info", "last name can only contain letters")
+        except game_errors.UsernameExists:
+            messagebox.showinfo("username error", "the username you chose already exists")
+        except game_errors.PasswordConfirmError:
+            messagebox.showerror("password error", "the password confirmation is incorrect")
+        except game_error.PasswordError:
+            messagebox.showerror("password error", "your password does not comply with the restrictions")
+        else:
+            cur.execute(f'INSERT INTO users'
+                        f'Values({self.username_var.get()},{self.password_var.get()},'
+                        f'{self.f_name_var.get()},{self.l_name_var.get()})'
+            self.master.login_screen()
