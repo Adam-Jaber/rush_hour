@@ -19,3 +19,11 @@ class LoginScreen(tk.Frame):
         tk.Entry(self, textvariable=self.password_var, width=40, show="*").grid(row=1, colum=1, padx=5, pady=5)
 
         tk.Button(self, text="Login", command=self.check_info).grid(row=3, column=0, columnspan=2, pady=10)
+
+    def check_info(self):
+        con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
+        cur = con.cursor()
+        cur.execute(f'SELECT user_id, user_password={self.password_var} FROM users WHERE username={self.username_var};')
+        user_info= cur.fetchone()
+        if user_info[1] == "true":
+            self.master.start_game(user_info[0])
