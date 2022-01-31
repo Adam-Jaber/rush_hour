@@ -1,5 +1,6 @@
 import psycopg2 as pg
 import tkinter as tk
+from tkinter import messagebox
 
 
 class LoginScreen(tk.Frame):
@@ -23,7 +24,12 @@ class LoginScreen(tk.Frame):
     def check_info(self):
         con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
         cur = con.cursor()
-        cur.execute(f'SELECT user_id, user_password={self.password_var} FROM users WHERE username={self.username_var};')
-        user_info= cur.fetchone()
-        if user_info[1] == "true":
-            self.master.start_game(user_info[0])
+        try:
+            cur.execute(f'SELECT user_id, user_password={self.password_var} FROM users WHERE username={self.username_var};')
+            user_info= cur.fetchone()
+            if user_info[1] == "true":
+                self.master.main_screen(user_info[0])
+            else:
+                messagebox.showinfo("wrong info", "password is incorrect")
+        except IndexError:
+            messagebox.showinfo("wrong info", f'username {self.username_var} does not exist')
