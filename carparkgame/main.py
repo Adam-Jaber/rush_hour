@@ -14,8 +14,9 @@ def _enable_movement():
             square.bind("<Left>", car.move_car)
         window.after(500,_enable_movement())
 
-window = tk.Tk()
-a = Board(window)
-a.pack()
-a.set_level(1)
-window.mainloop()
+if __name__ == "__main__":
+    window = tk.Tk()
+    a = Board(window)
+    a.pack()
+    a.set_level(1)
+    window.mainloop()
