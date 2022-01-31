@@ -27,8 +27,8 @@ class LoginScreen(tk.Frame):
         cur = con.cursor()
 
         try:
-            cur.execute(f'SELECT user_id, user_password={self.password_var} FROM users'
-                        f'WHERE username={self.username_var};')
+            cur.execute(f'SELECT user_id, user_password={self.password_var.get()} FROM users'
+                        f'WHERE username={self.username_var.get()};')
             user_info = cur.fetchone()
 
             if user_info[1] == "true":
@@ -36,4 +36,4 @@ class LoginScreen(tk.Frame):
             else:
                 messagebox.showinfo("wrong info", "password is incorrect")
         except IndexError:
-            messagebox.showinfo("wrong info", f'username {self.username_var} does not exist')
+            messagebox.showinfo("wrong info", f'username {self.username_var.get()} does not exist')
