@@ -13,7 +13,7 @@ class Board(tk.Frame):
         self.square_dict = dict()
         for row in range(6):
             for column in range(6):
-                self.square_dict[(row,column)] = Square(self, row, column)
+                self.square_dict[(row, column)] = Square(self, row, column)
 
         self.pack_squares()
 
@@ -39,6 +39,4 @@ class Board(tk.Frame):
 
     def pack_squares(self):
         for (row_, column_) in self.square_dict:
-            self.square_dict[(row_,column_)].grid(row=row_, column=column_)
-            #print('packed frame')
-
+            self.square_dict[(row_, column_)].grid(row=row_, column=column_)
