@@ -24,7 +24,7 @@ class Board(tk.Frame):
 
         con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
         cur = con.cursor()
-        cur.execute(f'SELECT * FROM LEVELS WHERE level_num = {level}')
+        cur.execute(f'SELECT * FROM levels WHERE level_num = {level}')
         level_info = cur.fetchone()
 
         for car in level_info:
