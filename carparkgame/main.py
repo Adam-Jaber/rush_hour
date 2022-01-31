@@ -16,7 +16,7 @@ def _enable_movement():
 
 if __name__ == "__main__":
     window = tk.Tk()
-    a = Board(window)
-    a.pack()
-    a.set_level(1)
+    game = Board(window)
+    game.pack()
+    game.set_level(1)
     window.mainloop()
