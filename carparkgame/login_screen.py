@@ -24,9 +24,12 @@ class LoginScreen(tk.Frame):
     def check_info(self):
         con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
         cur = con.cursor()
+
         try:
-            cur.execute(f'SELECT user_id, user_password={self.password_var} FROM users WHERE username={self.username_var};')
-            user_info= cur.fetchone()
+            cur.execute(f'SELECT user_id, user_password={self.password_var} FROM users'
+                        f'WHERE username={self.username_var};')
+            user_info = cur.fetchone()
+
             if user_info[1] == "true":
                 self.master.main_screen(user_info[0])
             else:
