@@ -3,7 +3,8 @@ import psycopg2 as pg
 from car import Car
 from square import Square
 
-LEVELS_DATA_COLUMNS = ['level_id', 'level_num', 'red', 'purple', 'pink', 'yellow', 'orange', 'light_green', 'green', 'blue', 'light_blue', 'black', 'grey']
+LEVELS_DATA_COLUMNS = ['level_id', 'level_num', 'red', 'purple', 'pink', 'yellow',
+                       'orange', 'light_green', 'green', 'blue', 'light_blue', 'black', 'grey']
 
 
 class Board(tk.Frame):
