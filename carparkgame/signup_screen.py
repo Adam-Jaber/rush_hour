@@ -69,3 +69,14 @@ class SignupScreen(tk.Frame):
                         f'{self.f_name_var.get()},{self.l_name_var.get()})'
             cur.commit()
             self.master.login_screen()
+        return
+
+    @staticmethod
+    def check_password(password):
+        if len(password) > 32 or len(password) < 8:
+            raise game_error.PasswordError
+        if password.isalpha():
+            raise game_error.PasswordError
+        if not any(c.isalpha() for c in password):
+            raise game_error.PasswordError
+        return
