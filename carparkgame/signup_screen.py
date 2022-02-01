@@ -29,6 +29,10 @@ class SignupScreen(tk.Frame):
 
         tk.Label(self, text="Password:").grid(row=4, column=0, pady=40, padx=60)
         tk.Entry(self, textvariable=self.password_var, width=40, show="*").grid(row=4, column=1, pady=40, padx=60)
+        tk.Label(self, font=("Ariel",7),text="""must contain:
+                               at least 8 charcters and up to 32
+                               one alphabet char.
+                               one number or spaciel digit""").grid(row=4, column=2, padx=10, pady=40)
 
         tk.Label(self, text="Confirm password:").grid(row=5, column=0, pady=40, padx=60)
         tk.Entry(self, textvariable=self.repassword_var, width=40, show="*").grid(row=5, colum=1, pady=40, padx=60)
