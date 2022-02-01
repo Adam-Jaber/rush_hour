@@ -36,3 +36,4 @@ class LevelsScreen(tk.Frame):
             lvl_num = line[0]
             self.button_dict[lvl_num].config(state=tk.NORMAL, bg="#C0C0C0")
             self.button_dict[lvl_num + 1].config(state=tk.NORMAL, bg="#C0C0C0")
+        self.button_dict[1].config(state=tk.NORMAL, bg="#C0C0C0")
