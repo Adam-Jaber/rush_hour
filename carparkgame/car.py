@@ -1,18 +1,20 @@
 from tkinter import messagebox
 import game_exceptions
 CAR_COLOR_DICT = {'red': 2, 'purple': 3, 'yellow': 3, 'green': 2, 'blue': 2}
-DIRECTION_DICT = {'Left': 0, 'Down': 1, 'Right': 2, 'Up': 3 }
+DIRECTION_DICT = {'Left': 0, 'Down': 1, 'Right': 2, 'Up': 3}
+
 
 def try_wrapper(fun):
     def dec_fun(*args, **kwargs):
         try:
             fun(*args, **kwargs)
         except AssertionError:
-            messagebox.showerror("error","the car doesnt move in that direction")
+            messagebox.showerror("error", "the car doesnt move in that direction")
         except game_exceptions.BorderException as e:
-            messagebox.showerror("error",e)
+            messagebox.showerror("error", e)
 
     return dec_fun
+
 
 class Car:
     def __init__(self, master, color, position, rotation):
@@ -40,9 +42,9 @@ class Car:
     def move_car(self, event):
         assert DIRECTION_DICT[event.keysym] % 2 == self.rotation
 
-        direction_to_tuple = {'Right': (0,1), 'Left': (0,-1), 'Up': (-1,0), 'Down':(1,0)}
+        direction_to_tuple = {'Right': (0, 1), 'Left': (0, -1), 'Up': (-1, 0), 'Down': (1, 0)}
         add_to_row, add_to_column = direction_to_tuple[event.keysym]
-        new_positions = [(row + add_to_row,column + add_to_column) for (row,column) in self.squares_to_paint]
+        new_positions = [(row + add_to_row, column + add_to_column) for (row, column) in self.squares_to_paint]
 
         if not self.check_positions(new_positions):
             raise game_exceptions.BorderException
@@ -58,8 +60,7 @@ class Car:
         self._clear_movement()
         self._enable_movement()
 
-    #@try_wrapper
-    def paint_squares(self,squares_to_paint ,square_to_delete = None):
+    def paint_squares(self, squares_to_paint, square_to_delete=None):
         for square in squares_to_paint:
             self.master.square_dict[square].paint(self.color)
 
@@ -85,7 +86,7 @@ class Car:
 
     @staticmethod
     def check_positions(position_list):
-        for row,column in position_list:
+        for row, column in position_list:
             if 0 <= row <= 5 and 0 <= column <= 5:
                 pass
             else:
