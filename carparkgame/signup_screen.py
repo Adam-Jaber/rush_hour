@@ -77,9 +77,9 @@ class SignupScreen(tk.Frame):
     @staticmethod
     def check_password(password):
         if len(password) > 32 or len(password) < 8:
-            raise game_exceptions.PasswordError
+            raise game_exceptions.InvalidPassword
         if password.isalpha():
-            raise game_exceptions.PasswordError
+            raise game_exceptions.InvalidPassword
         if not any(c.isalpha() for c in password):
-            raise game_exceptions.PasswordError
+            raise game_exceptions.InvalidPassword
         return
