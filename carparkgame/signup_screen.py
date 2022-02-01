@@ -31,7 +31,7 @@ class SignupScreen(tk.Frame):
         tk.Entry(self, textvariable=self.password_var, width=40, show="*").grid(row=4, column=1, pady=40, padx=60)
 
         tk.Label(self, text="Confirm password:").grid(row=5, column=0, pady=40, padx=60)
-        tk.Entry(self, textvariable=self.repassword_var, width=40).grid(row=5, colum=1, pady=40, padx=60)
+        tk.Entry(self, textvariable=self.repassword_var, width=40, show="*").grid(row=5, colum=1, pady=40, padx=60)
 
         tk.Button(self, text="Confirm", command=self.check_info).grid(row=6, column=0, columnspan=2, pady=60)
 
