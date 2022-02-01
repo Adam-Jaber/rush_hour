@@ -1,10 +1,7 @@
 from tkinter import messagebox
-
+import game_exceptions
 CAR_COLOR_DICT = {'red': 2, 'purple': 3, 'yellow': 3, 'green': 2, 'blue': 2}
 DIRECTION_DICT = {'Left': 0, 'Down': 1, 'Right': 2, 'Up': 3 }
-#make more spacific errors
-class BoardException(BaseException):
-    pass
 
 def try_wrapper(fun):
     def dec_fun(*args, **kwargs):
@@ -12,8 +9,8 @@ def try_wrapper(fun):
             fun(*args, **kwargs)
         except AssertionError:
             messagebox.showerror("error","the car doesnt move in that direction")
-        except BoardException:
-            messagebox.showerror("error","you cant move the car out of the board")
+        except game_exceptions.BorderException as e:
+            messagebox.showerror("error",e)
 
     return dec_fun
 
@@ -48,7 +45,7 @@ class Car:
         new_positions = [(row + add_to_row,column + add_to_column) for (row,column) in self.squares_to_paint]
 
         if not self.check_positions(new_positions):
-            raise BoardException
+            raise game_exceptions.BorderException
 
         del_position = [pos for pos in self.squares_to_paint if pos not in new_positions][0]
 
