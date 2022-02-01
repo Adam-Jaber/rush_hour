@@ -40,6 +40,8 @@ class SignupScreen(tk.Frame):
         cur = con.cursor()
         cur.execute(f'SELECT * FROM users WHERE username = {self.username_var.get()}')
         try:
+            for var in (self.f_name_var,self.l_name_var,self.username_var,self.password_var):
+                assert var.get() != ""
             if not self.f_name_var.get().isalpha():
                 raise game_errors.InvalidFName
             if not self.l_name_var.get().isalpha():
@@ -49,6 +51,8 @@ class SignupScreen(tk.Frame):
             if self.password_var.get() =! self.repassword_var.get():
                 raise game_errors.PasswordConfirmError
             SignupScreen.check_password(self.password_var.get())
+        except AssertionError:
+            messagebox.showerror("empty field", "please fill all the sections")
         except game_errors.InvalidFName:
             messagebox.showerror("incorrect info", "first name can only contain letters")
         except game_errors.InvalidLName:
@@ -63,4 +67,5 @@ class SignupScreen(tk.Frame):
             cur.execute(f'INSERT INTO users'
                         f'Values({self.username_var.get()},{self.password_var.get()},'
                         f'{self.f_name_var.get()},{self.l_name_var.get()})'
+            cur.commit()
             self.master.login_screen()
