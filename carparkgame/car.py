@@ -10,9 +10,8 @@ def try_wrapper(fun):
             fun(*args, **kwargs)
         except AssertionError:
             messagebox.showerror("error", "the car doesnt move in that direction")
-        except game_exceptions.BorderException as e:
+        except game_exceptions.RushHourException as e:
             messagebox.showerror("error", e)
-
     return dec_fun
 
 
@@ -48,6 +47,9 @@ class Car:
 
         if not self.check_positions(new_positions):
             raise game_exceptions.BorderException
+
+        if self.check_collision(new_positions):
+            raise game_exceptions.CollisionException
 
         del_position = [pos for pos in self.squares_to_paint if pos not in new_positions][0]
 
@@ -92,3 +94,9 @@ class Car:
             else:
                 return False
         return True
+
+    def check_collision(self, new_positions):
+        for position in new_positions:
+            if self.master.square_dict[position].color not in ['white', self.color]:
+                return True
+        return False
