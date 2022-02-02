@@ -17,7 +17,7 @@ class LoginScreen(tk.Frame):
         tk.Label(self, text="Username:").grid(row=0, column=0, padx=5, pady=5)
         tk.Entry(self, textvariable=self.username_var, width=40).grid(row=0, column=1, padx=5, pady=5)
         tk.Label(self, text="Password:").grid(row=1, column=0, padx=5, pady=5)
-        tk.Entry(self, textvariable=self.password_var, width=40, show="*").grid(row=1, colum=1, padx=5, pady=5)
+        tk.Entry(self, textvariable=self.password_var, width=40, show="*").grid(row=1, column=1, padx=5, pady=5)
 
         tk.Button(self, text="Login", command=self.check_info).grid(row=3, column=0, columnspan=2, pady=10)
         tk.Button(self, text="Sign up", command=lambda: self.master.signup_screen(self)).grid(row=4, column=0,
