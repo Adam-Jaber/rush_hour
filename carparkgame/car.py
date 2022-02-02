@@ -64,6 +64,9 @@ class Car:
         self._clear_movement()
         self._enable_movement()
 
+        if self.color == 'red':
+            self.master.check_win()
+
     def paint_squares(self, squares_to_paint, square_to_delete=None):
         for square in squares_to_paint:
             self.master.square_dict[square].paint(self.color)
