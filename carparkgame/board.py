@@ -55,3 +55,4 @@ class Board(tk.Frame):
                                 {self.level_id}
                                 )""")
             self.cur.commit()
+            self.master.wining_screen()
