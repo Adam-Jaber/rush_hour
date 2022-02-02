@@ -8,24 +8,26 @@ LEVELS_DATA_COLUMNS = ['level_id', 'level_num', 'red', 'purple', 'pink', 'yellow
 
 
 class Board(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, level):
         super().__init__(master, width=420, height=420)
 
         self.square_dict = dict()
+        self.level = level
+
         for row in range(6):
             for column in range(6):
                 self.square_dict[(row, column)] = Square(self, row, column)
 
         self.pack_squares()
 
-    def set_level(self, level):
+    def set_level(self):
         self._clear_board()
 
         self.cars_dict = dict()
 
         con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
         cur = con.cursor()
-        cur.execute(f'SELECT * FROM levels WHERE level_num = {level}')
+        cur.execute(f'SELECT * FROM levels WHERE level_num = {self.level}')
         level_info = cur.fetchone()
 
         for car in level_info:
@@ -41,3 +43,5 @@ class Board(tk.Frame):
     def pack_squares(self):
         for (row_, column_) in self.square_dict:
             self.square_dict[(row_, column_)].grid(row=row_, column=column_)
+
+    def check_win(self):
