@@ -9,7 +9,7 @@ from board import Board
 class MainWindow(tk.Tk):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.geometry("600x1066")
+        self.geometry("1066x600")
         self.config(bg="#303030")
 
         LoginScreen(self).pack()
