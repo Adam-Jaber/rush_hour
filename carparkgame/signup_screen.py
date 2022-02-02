@@ -71,7 +71,7 @@ class SignupScreen(tk.Frame):
                         f'Values({self.username_var.get()},{self.password_var.get()},'
                         f'{self.f_name_var.get()},{self.l_name_var.get()})')
             cur.commit()
-            self.master.login_screen()
+            self.master.login_screen(self)
         return
 
     @staticmethod

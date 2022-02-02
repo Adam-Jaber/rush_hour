@@ -20,19 +20,20 @@ class LoginScreen(tk.Frame):
         tk.Entry(self, textvariable=self.password_var, width=40, show="*").grid(row=1, colum=1, padx=5, pady=5)
 
         tk.Button(self, text="Login", command=self.check_info).grid(row=3, column=0, columnspan=2, pady=10)
-        tk.Button(self, text="Sign up", command=self.master.signup_screen).grid(row=4, column=0, columnspan=2)
+        tk.Button(self, text="Sign up", command=lambda: self.master.signup_screen(self)).grid(row=4, column=0,
+                                                                                              columnspan=2)
 
     def check_info(self):
         con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
         cur = con.cursor()
 
         try:
-            cur.execute(f'SELECT user_id, user_password={self.password_var.get()} FROM users'
-                        f'WHERE username={self.username_var.get()};')
+            cur.execute(f"""SELECT user_id, user_password={self.password_var.get()} FROM users
+                            WHERE username={self.username_var.get()};""")
             user_info = cur.fetchone()
 
             if user_info[1] == "true":
-                self.master.main_screen(user_info[0])
+                self.master.main_screen(user_info[0], self)
             else:
                 messagebox.showinfo("wrong info", "password is incorrect")
         except IndexError:
