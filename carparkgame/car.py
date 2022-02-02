@@ -1,5 +1,6 @@
 from tkinter import messagebox
 import game_exceptions
+from playsound import playsound
 CAR_COLOR_DICT = {'red': 2, 'purple': 3, 'yellow': 3, 'green': 2, 'blue': 2}
 DIRECTION_DICT = {'Left': 0, 'Down': 1, 'Right': 2, 'Up': 3}
 
@@ -49,6 +50,7 @@ class Car:
             raise game_exceptions.BorderException
 
         if self.check_collision(new_positions):
+            playsound("yt5s (mp3cut.net).mp3")
             raise game_exceptions.CollisionException
 
         del_position = [pos for pos in self.squares_to_paint if pos not in new_positions][0]
