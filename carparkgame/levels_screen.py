@@ -39,4 +39,4 @@ class LevelsScreen(tk.Frame):
         self.button_dict[1].config(state=tk.NORMAL, bg="#C0C0C0")
 
     def play_level(self, level_num):
-        self.master.load_board(self, level_num)
+        self.master.play_level(level_num, self.user_id, self)

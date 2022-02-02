@@ -25,4 +25,4 @@ class MainMenu(tk.Frame):
                                                                                                   anchor='N')
 
     def play(self):
-        self.master.level_screen(self.user_id)
+        self.master.levels_screen(self.user_id, self)
