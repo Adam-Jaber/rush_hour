@@ -23,7 +23,7 @@ class LevelsScreen(tk.Frame):
         for level in cur.fetchall():
             level_num = level[0]
             button = tk.Button(self, text=str(level_num), font=('Helvetica', 30),
-                               command=lambda: self.play_level(level_num), state=tk.DISABLED, bg="#404040")
+                               command=lambda: self.play_level(level[0]), state=tk.DISABLED, bg="#404040")
             button.grid(row=level_num // 5, column=level_num % 5, padx=30, pady=30)
             self.button_dict[level_num] = button
 
