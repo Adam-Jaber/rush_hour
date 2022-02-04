@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import imageTK, image
 from login_screen import LoginScreen
 from signup_screen import SignupScreen
 from main_menu import MainMenu
@@ -36,12 +37,12 @@ class MainWindow(tk.Tk):
 
     def winning_screen(self, user_id, current_screen):
         current_screen.destroy()
-        winning_frame = tk.Frame(self, width=1066, height=600)
-        winning_frame.pack()
-        #canvas = tk.Canvas(winning_frame)
-        #win_gif = tk.PhotoImage(file="you_go_girl.gif")
-        #canvas.create_image(image=win_gif)
-        #canvas.pack()
+        winning_frame = tk.Frame(self)
+        winning_frame.pack(fill='both')
+        canvas = tk.Canvas(winning_frame)
+        win_gif = tk.PhotoImage(file="you_go_girl.gif")
+        canvas.create_image(image=win_gif)
+        canvas.pack()
         home_button = tk.Button(winning_frame, text="Return to home screen",
-                                font=('Helvetica', 50), command=lambda: self.main_menu(user_id, winning_frame))
-        home_button.place(x=500, y=200)
+                                font=('Helvetica', 30), command=lambda: self.main_menu(user_id, winning_frame))
+        home_button.pack(side='bottom')

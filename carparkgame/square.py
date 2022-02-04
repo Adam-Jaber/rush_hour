@@ -13,9 +13,9 @@ class Square(tk.Frame):
         super().focus_set()
 
     def paint(self, color):
-        self.config(bg=color)
+        self.config(bg=color, cursor="target")
         self.color = color
 
     def unpaint(self):
-        self.config(bg='white')
+        self.config(bg='white', cursor="arrow")
         self.color = 'white'
