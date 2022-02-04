@@ -50,7 +50,7 @@ class Car:
             raise game_exceptions.BorderException
 
         if self.check_collision(new_positions):
-            p = playsound.playsound('carsiund.mp3', block=True)
+            s = playsound.playsound('carsiund.mp3', block=True)
             raise game_exceptions.CollisionException
 
         del_position = [pos for pos in self.squares_to_paint if pos not in new_positions][0]

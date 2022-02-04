@@ -36,7 +36,8 @@ class LevelsScreen(tk.Frame):
             lvl_num = line[0]
             self.button_dict[lvl_num].configure(state=tk.NORMAL, bg="#C0C0C0", command=lambda: self.play_level(lvl_num))
             try:
-                self.button_dict[lvl_num + 1].configure(state=tk.NORMAL, bg="#C0C0C0", command=lambda: self.play_level(lvl_num + 1))
+                self.button_dict[lvl_num + 1].configure(state=tk.NORMAL, bg="#C0C0C0",
+                                                        command=lambda: self.play_level(lvl_num + 1))
             except KeyError:
                 pass
         self.button_dict[1].config(state=tk.NORMAL, bg="#C0C0C0", command=lambda: self.play_level(1))

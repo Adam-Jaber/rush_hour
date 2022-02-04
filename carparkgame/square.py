@@ -7,7 +7,7 @@ class Square(tk.Frame):
         self.row = row
         self.column = column
         self.bind('<Button-1>', self.focus_set)
-        self.color= 'white'
+        self.color = 'white'
 
     def focus_set(self, event=None):
         super().focus_set()
