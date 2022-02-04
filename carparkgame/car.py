@@ -28,7 +28,7 @@ class Car:
         self._enable_movement()
 
     def _pack_car(self):
-        column, row = self.position
+        row, column = self.position
 
         for i in range(CAR_COLOR_DICT[self.color]):
             if self.rotation:
@@ -50,8 +50,7 @@ class Car:
             raise game_exceptions.BorderException
 
         if self.check_collision(new_positions):
-            p = playsound.playsound('carsiund.mp3', block=False)
-            p.terminate()
+            p = playsound.playsound('carsiund.mp3', block=True)
             raise game_exceptions.CollisionException
 
         del_position = [pos for pos in self.squares_to_paint if pos not in new_positions][0]
