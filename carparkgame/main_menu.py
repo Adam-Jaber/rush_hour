@@ -11,7 +11,7 @@ class MainMenu(tk.Frame):
 
     def setup(self):
         gif_canvas = tk.Canvas(self, height=400, width=1066)
-
+        open("lig_mcqueen.png", 'r')
         photo = tk.PhotoImage("lig_mcqueen.png")
         gif_canvas.create_image(500, 0, image=photo, anchor='n')
         gif_canvas.place(x=0, y=0)
