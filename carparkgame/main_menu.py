@@ -1,11 +1,4 @@
 import tkinter as tk
-import cloudinary
-
-cloudinary.config(
-  cloud_name="adamj",
-  api_key="826397975378178",
-  api_secret="TLVdvPktUWsG8GlbdiK8cv5B_-I"
-)
 
 
 class MainMenu(tk.Frame):
@@ -17,12 +10,14 @@ class MainMenu(tk.Frame):
         self.setup()
 
     def setup(self):
-        gif_canvas = tk.Canvas(self, height=400, width=600 * (16/9), bg="#B0B0B0")
-        gif = tk.PhotoImage(file=cloudinary.CloudinaryImage("cruisin_.gif").image(width=400, height=400, crop="scale"))
-        gif_canvas.create_image((400 * (16/9))//2, 0, image=gif, anchor='N')
+        gif_canvas = tk.Canvas(self, height=400, width=1066)
+        open("lig_mcqueen.png", 'r')
+        photo = tk.PhotoImage("lig_mcqueen.png")
+        gif_canvas.create_image(500, 0, image=photo, anchor='n')
         gif_canvas.place(x=0, y=0)
-        tk.Button(self, width=150, height=60, text="Play", command=self.play, bg="#B0B0B0").place(y=470, x=533,
-                                                                                                  anchor='N')
+
+        tk.Button(self, text="Play", font=('Helvetica', 35), command=self.play,
+                  bg="#B0B0B0").place(y=470, x=533, anchor='n')
 
     def play(self):
         self.master.levels_screen(self.user_id, self)

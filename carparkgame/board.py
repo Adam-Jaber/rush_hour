@@ -27,8 +27,8 @@ class Board(tk.Frame):
 
         self.cars_dict = dict()
 
-        con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
-        self.cur = con.cursor()
+        self.con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
+        self.cur = self.con.cursor()
         self.cur.execute(f'SELECT * FROM levels WHERE level_num = {self.level}')
         level_info = self.cur.fetchone()
         self.level_id = level_info[0]
@@ -49,10 +49,14 @@ class Board(tk.Frame):
 
     def check_win(self):
         if self.square_dict[(2, 5)].color == 'red':
-            self.cur.execute(f"""INSERT INTO user_level_passed
+            self.cur.execute(f"""select user_id FROM user_level_passed
+                                 WHERE user_id = {self.user_id} and
+                                 level_id = {self.level_id}""")
+            if len(self.cur.fetchall()) == 0:
+                self.cur.execute(f"""INSERT INTO user_level_passed
                                 VALUES(
                                 {self.user_id},
                                 {self.level_id}
                                 )""")
-            self.cur.commit()
-            self.master.wining_screen(self.user_id, self)
+                self.con.commit()
+            self.master.winning_screen(self.user_id, self)
