@@ -72,14 +72,14 @@ class SignupScreen(tk.Frame):
         return
 
     def store_info(self):
-        salt = urandom(16)
-        hashed_pass = hashlib.pbkdf2_hmac('sha256',self.password_var.get().encode('utf-8'),salt,100000)
+        salt = urandom(16).hex()
+        hashed_pass = hashlib.pbkdf2_hmac('sha256', self.password_var.get().encode('utf-8'), salt.encode('utf-8'), 100000)
 
         con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
         cur = con.cursor()
-        cur.execute(f"""INSERT INTO users (username, user_password,salt, first_name, last_name)
-                        Values(\'{self.username_var.get()}\',\'{hashed_pass.}\',
-                        {salt},\'{self.f_name_var.get()}\',\'{self.l_name_var.get()}\')""")
+        cur.execute(f"""INSERT INTO users (username, user_password, salt, first_name, last_name)
+                        Values(\'{self.username_var.get()}\',\'{hashed_pass.hex()}\',
+                        \'{salt}\',\'{self.f_name_var.get()}\',\'{self.l_name_var.get()}\')""")
         con.commit()
 
         self.master.login_screen(self)

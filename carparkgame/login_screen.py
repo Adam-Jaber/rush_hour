@@ -27,17 +27,21 @@ class LoginScreen(tk.Frame):
     def check_info(self):
         con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
         cur = con.cursor()
-
-        hashed_pass = hashlib.sha256(self.password_var.get().encode('utf-8'))
-
+        cur.execute(f"""SELECT salt FROM users
+                       WHERE username=\'{self.username_var.get()}\'""")
         try:
-            cur.execute(f"""SELECT user_id, user_password=\'{hashed_pass.hexdigest()}\' FROM users
-                            WHERE username=\'{self.username_var.get()}\';""")
-            user_info = cur.fetchone()
-
-            if user_info[1]:
-                self.master.main_menu(user_info[0], self)
-            else:
-                messagebox.showinfo("wrong info", "password is incorrect")
+            salt = cur.fetchone()[0].encode('utf-8')
+            print(salt)
         except IndexError:
             messagebox.showinfo("wrong info", f'username {self.username_var.get()} does not exist')
+            return
+
+        hashed_pass = hashlib.pbkdf2_hmac('sha256', self.password_var.get().encode('utf-8'), salt, 100000)
+        cur.execute(f"""SELECT user_id, user_password=\'{hashed_pass.hex()}\' FROM users
+                        WHERE username=\'{self.username_var.get()}\';""")
+        user_info = cur.fetchone()
+
+        if user_info[1]:
+            self.master.main_menu(user_info[0], self)
+        else:
+            messagebox.showinfo("wrong info", "password is incorrect")
