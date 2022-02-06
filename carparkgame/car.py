@@ -54,7 +54,6 @@ class Car:
             raise game_exceptions.CollisionException
 
         del_position = [pos for pos in self.squares_to_paint if pos not in new_positions][0]
-
         self.squares_to_paint = new_positions
         self.paint_squares(self.squares_to_paint, del_position)
 
