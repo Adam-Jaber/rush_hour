@@ -1,3 +1,4 @@
+import hashlib
 import tkinter as tk
 from tkinter import messagebox
 import psycopg2 as pg
@@ -66,12 +67,20 @@ class SignupScreen(tk.Frame):
         except game_exceptions.SignupException as e:
             messagebox.showerror("signup error", e)
         else:
-            cur.execute(f"""INSERT INTO users (username, user_password, first_name, last_name)
-                            Values(\'{self.username_var.get()}\',\'{self.password_var.get()}\',
-                            \'{self.f_name_var.get()}\',\'{self.l_name_var.get()}\')""")
-            con.commit()
-            self.master.login_screen(self)
+            self.store_info()
         return
+
+    def store_info(self):
+        hashed_pass = hashlib.sha256(self.password_var.get().encode('utf-8'))
+
+        con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
+        cur = con.cursor()
+        cur.execute(f"""INSERT INTO users (username, user_password, first_name, last_name)
+                        Values(\'{self.username_var.get()}\',\'{hashed_pass.hexdigest()}\',
+                        \'{self.f_name_var.get()}\',\'{self.l_name_var.get()}\')""")
+        con.commit()
+
+        self.master.login_screen(self)
 
     @staticmethod
     def check_password(password):
