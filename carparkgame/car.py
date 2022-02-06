@@ -1,4 +1,5 @@
 from tkinter import messagebox
+from pygame import mixer
 import game_exceptions
 import playsound
 CAR_COLOR_DICT = {'red': 2, 'purple': 3, 'yellow': 3, 'green': 2, 'blue': 2, 'orange': 3, 'black': 3, 'pink': 2}
@@ -50,7 +51,7 @@ class Car:
             raise game_exceptions.BorderException
 
         if self.check_collision(new_positions):
-            s = playsound.playsound('carsiund.mp3', block=True)
+            self.play_crash_sound()
             raise game_exceptions.CollisionException
 
         del_position = [pos for pos in self.squares_to_paint if pos not in new_positions][0]
@@ -105,3 +106,9 @@ class Car:
             if self.master.square_dict[position].color not in ['white', self.color]:
                 return True
         return False
+
+    @staticmethod
+    def play_crash_sound():
+        mixer.init()
+        mixer.music.load("carsiund.mp3")
+        mixer.music.play()
