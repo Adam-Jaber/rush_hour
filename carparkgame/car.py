@@ -1,7 +1,6 @@
 from tkinter import messagebox
 from pygame import mixer
 import game_exceptions
-import playsound
 CAR_COLOR_DICT = {'red': 2, 'purple': 3, 'yellow': 3, 'green': 2, 'blue': 2, 'orange': 3, 'black': 3, 'pink': 2}
 DIRECTION_DICT = {'Left': 0, 'Down': 1, 'Right': 2, 'Up': 3}
 
