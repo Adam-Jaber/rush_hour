@@ -11,6 +11,8 @@ def try_wrapper(fun):
             fun(*args, **kwargs)
         except AssertionError:
             messagebox.showerror("error", "the car doesnt move in that direction")
+        except game_exceptions.BorderException as e:
+            print(e)
         except game_exceptions.RushHourException as e:
             messagebox.showerror("error", e)
     return dec_fun
