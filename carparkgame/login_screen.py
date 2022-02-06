@@ -31,7 +31,6 @@ class LoginScreen(tk.Frame):
                        WHERE username=\'{self.username_var.get()}\'""")
         try:
             salt = cur.fetchone()[0].encode('utf-8')
-            print(salt)
         except IndexError:
             messagebox.showinfo("wrong info", f'username {self.username_var.get()} does not exist')
             return
