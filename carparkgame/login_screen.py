@@ -1,3 +1,4 @@
+import hashlib
 import psycopg2 as pg
 import tkinter as tk
 from tkinter import messagebox
@@ -27,8 +28,10 @@ class LoginScreen(tk.Frame):
         con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
         cur = con.cursor()
 
+        hashed_pass = hashlib.sha256(self.password_var.get().encode('utf-8'))
+
         try:
-            cur.execute(f"""SELECT user_id, user_password=\'{self.password_var.get()}\' FROM users
+            cur.execute(f"""SELECT user_id, user_password=\'{hashed_pass.hexdigest()}\' FROM users
                             WHERE username=\'{self.username_var.get()}\';""")
             user_info = cur.fetchone()
 
