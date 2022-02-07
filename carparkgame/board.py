@@ -14,6 +14,11 @@ class Board(tk.Frame):
         self.square_dict = dict()
         self.level = level
         self.user_id = user_id
+        self.cars_dict = dict()
+
+        self.con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com',
+                                           database='rush_hour', user='admin', password='rush1234')
+        self.cur = self.con.cursor()
 
         for row in range(6):
             for column in range(6):
@@ -25,10 +30,6 @@ class Board(tk.Frame):
     def set_level(self):
         self._clear_board()
 
-        self.cars_dict = dict()
-
-        self.con = mysql.connector.connect(host ='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com',database='rush_hour', user='admin', password='rush1234')
-        self.cur = self.con.cursor()
         self.cur.execute(f'SELECT * FROM levels WHERE level_num = {self.level}')
         level_info = self.cur.fetchone()
         self.level_id = level_info[0]
