@@ -25,7 +25,8 @@ class LoginScreen(tk.Frame):
                                                                                               columnspan=2)
 
     def check_info(self):
-        con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com', database='rush_hour', user='admin', password='rush1234')
+        con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com', database='rush_hour',
+                                      user='admin', password='rush1234')
         cur = con.cursor()
         cur.execute(f"""SELECT salt FROM users
                        WHERE username=\'{self.username_var.get()}\'""")
