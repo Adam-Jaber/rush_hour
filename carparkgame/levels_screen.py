@@ -1,8 +1,7 @@
 import tkinter as tk
-import psycopg2 as pg
+import mysql.connector
 
-con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
-cur = con.cursor()
+
 
 
 class LevelsScreen(tk.Frame):
@@ -12,6 +11,10 @@ class LevelsScreen(tk.Frame):
         self.user_id = user_id
         self.button_dict = dict()
 
+        self.con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com', database='rush_hour',
+                                      user='admin', password='rush1234')
+        self.cur = self.con.cursor()
+
         self.set_up()
 
     def set_up(self):
@@ -19,8 +22,8 @@ class LevelsScreen(tk.Frame):
         self.disable_unreached_lvl()
 
     def pack_lvl_buttons(self):
-        cur.execute("Select level_num FROM levels")
-        for level in cur.fetchall():
+        self.cur.execute("Select level_num FROM levels")
+        for level in self.cur.fetchall():
             level_num = level[0]
             button = tk.Button(self, text=str(level_num), font=('Helvetica', 30),
                                state=tk.DISABLED, bg="#404040")
@@ -28,11 +31,11 @@ class LevelsScreen(tk.Frame):
             self.button_dict[level_num] = button
 
     def disable_unreached_lvl(self):
-        cur.execute("""select level_num FROM levels
+        self.cur.execute("""select level_num FROM levels
                        JOIN user_level_passed ON
                        levels.level_id = user_level_passed.level_id
                        WHERE user_id={}""".format(self.user_id))
-        for line in cur.fetchall():
+        for line in self.cur.fetchall():
             lvl_num = line[0]
             self.button_dict[lvl_num].configure(state=tk.NORMAL, bg="#C0C0C0", command=lambda: self.play_level(lvl_num))
             try:

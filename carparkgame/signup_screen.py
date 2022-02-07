@@ -2,7 +2,7 @@ import hashlib
 import tkinter as tk
 from os import urandom
 from tkinter import messagebox
-import psycopg2 as pg
+import mysql.connector
 import game_exceptions
 
 
@@ -43,7 +43,8 @@ class SignupScreen(tk.Frame):
         tk.Button(self, text="Confirm", command=self.check_info).grid(row=6, column=0, columnspan=2, pady=30)
 
     def check_info(self):
-        con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
+        con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com', database='rush_hour',
+                                      user='admin', password='rush1234')
         cur = con.cursor()
         cur.execute(f'SELECT * FROM users WHERE username = \'{self.username_var.get()}\'')
         try:
@@ -73,9 +74,11 @@ class SignupScreen(tk.Frame):
 
     def store_info(self):
         salt = urandom(16).hex()
-        hashed_pass = hashlib.pbkdf2_hmac('sha256', self.password_var.get().encode('utf-8'), salt.encode('utf-8'), 100000)
+        hashed_pass = hashlib.pbkdf2_hmac('sha256', self.password_var.get().encode('utf-8'),
+                                          salt.encode('utf-8'), 100000)
 
-        con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
+        con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com', database='rush_hour',
+                                      user='admin', password='rush1234')
         cur = con.cursor()
         cur.execute(f"""INSERT INTO users (username, user_password, salt, first_name, last_name)
                         Values(\'{self.username_var.get()}\',\'{hashed_pass.hex()}\',
