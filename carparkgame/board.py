@@ -1,5 +1,5 @@
 import tkinter as tk
-import psycopg2 as pg
+import mysql.connector
 from car import Car
 from square import Square
 
@@ -27,7 +27,7 @@ class Board(tk.Frame):
 
         self.cars_dict = dict()
 
-        self.con = pg.connect(database='rush_hour', user='postgres', password='jaber2213')
+        self.con = mysql.connector.connect(host ='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com',database='rush_hour', user='admin', password='rush1234')
         self.cur = self.con.cursor()
         self.cur.execute(f'SELECT * FROM levels WHERE level_num = {self.level}')
         level_info = self.cur.fetchone()
