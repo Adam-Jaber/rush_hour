@@ -1,8 +1,8 @@
 import hashlib
+import requests
 import tkinter as tk
 from os import urandom
 from tkinter import messagebox
-import mysql.connector
 import game_exceptions
 
 
@@ -43,10 +43,8 @@ class SignupScreen(tk.Frame):
         tk.Button(self, text="Confirm", command=self.check_info).grid(row=6, column=0, columnspan=2, pady=30)
 
     def check_info(self):
-        con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com', database='rush_hour',
-                                      user='admin', password='rush1234')
-        cur = con.cursor()
-        cur.execute(f'SELECT * FROM users WHERE username = \'{self.username_var.get()}\'')
+        user_info = requests.get(f"""https://2rc2iohsvl.execute-api.us-east-2.amazonaws.com/test/users?username={self.username_var.get()}""").json()
+        print(user_info)
         try:
             for var in (self.f_name_var, self.l_name_var, self.username_var, self.password_var):
                 assert var.get() != ""
@@ -57,7 +55,7 @@ class SignupScreen(tk.Frame):
             if not self.l_name_var.get().isalpha():
                 raise game_exceptions.InvalidLName
 
-            if len(cur.fetchall()) != 0:
+            if len(user_info) != 0:
                 raise game_exceptions.UsernameExists
 
             if self.password_var.get() != self.repassword_var.get():
@@ -77,13 +75,7 @@ class SignupScreen(tk.Frame):
         hashed_pass = hashlib.pbkdf2_hmac('sha256', self.password_var.get().encode('utf-8'),
                                           salt.encode('utf-8'), 100000)
 
-        con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com', database='rush_hour',
-                                      user='admin', password='rush1234')
-        cur = con.cursor()
-        cur.execute(f"""INSERT INTO users (username, user_password, salt, first_name, last_name)
-                        Values(\'{self.username_var.get()}\',\'{hashed_pass.hex()}\',
-                        \'{salt}\',\'{self.f_name_var.get()}\',\'{self.l_name_var.get()}\')""")
-        con.commit()
+        requests.post(f"""https://2rc2iohsvl.execute-api.us-east-2.amazonaws.com/test/users?user={self.username_var.get()},{hashed_pass.hex()},{salt},{self.f_name_var.get()},{self.l_name_var.get()}""")
 
         self.master.login_screen(self)
 

@@ -1,5 +1,5 @@
 import hashlib
-import mysql.connector
+import requests
 import tkinter as tk
 from tkinter import messagebox
 
@@ -25,23 +25,17 @@ class LoginScreen(tk.Frame):
                                                                                               columnspan=2)
 
     def check_info(self):
-        con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com', database='rush_hour',
-                                      user='admin', password='rush1234')
-        cur = con.cursor()
-        cur.execute(f"""SELECT salt FROM users
-                       WHERE username=\'{self.username_var.get()}\'""")
+        salt_info = requests.get(f"""https://2rc2iohsvl.execute-api.us-east-2.amazonaws.com/test/users?username={self.username_var.get()}&columns=salt""").json()
         try:
-            salt = cur.fetchone()[0].encode('utf-8')
+            salt = salt_info[0].encode('utf-8')
         except IndexError:
             messagebox.showinfo("wrong info", f'username {self.username_var.get()} does not exist')
             return
 
         hashed_pass = hashlib.pbkdf2_hmac('sha256', self.password_var.get().encode('utf-8'), salt, 100000)
-        cur.execute(f"""SELECT user_id, user_password=\'{hashed_pass.hex()}\' FROM users
-                        WHERE username=\'{self.username_var.get()}\';""")
-        user_info = cur.fetchone()
+        user_info = requests.get(f"""https://2rc2iohsvl.execute-api.us-east-2.amazonaws.com/test/users?username={self.username_var.get()}&columns=user_id,user_password""").json()
 
-        if user_info[1]:
+        if user_info[1] == hashed_pass.hex():
             self.master.main_menu(user_info[0], self)
         else:
             messagebox.showinfo("wrong info", "password is incorrect")
