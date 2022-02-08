@@ -1,5 +1,5 @@
 import tkinter as tk
-import mysql.connector
+import requests
 from car import Car
 from square import Square
 
@@ -16,10 +16,6 @@ class Board(tk.Frame):
         self.user_id = user_id
         self.cars_dict = dict()
 
-        self.con = mysql.connector.connect(host='rush-hour.cqc4hsepuzva.us-east-2.rds.amazonaws.com',
-                                           database='rush_hour', user='admin', password='rush1234')
-        self.cur = self.con.cursor()
-
         for row in range(6):
             for column in range(6):
                 self.square_dict[(row, column)] = Square(self, row, column)
@@ -30,14 +26,12 @@ class Board(tk.Frame):
     def set_level(self):
         self._clear_board()
 
-        self.cur.execute(f'SELECT * FROM levels WHERE level_num = {self.level}')
-        level_info = self.cur.fetchone()
-        self.level_id = level_info[0]
+        level_info_dict = requests.get(f"https://2rc2iohsvl.execute-api.us-east-2.amazonaws.com/test/level_info?level_num={self.level}").json()
+        self.level_id = level_info_dict['level_id']
 
-        for car in level_info:
-            if isinstance(car, str):
-                color = LEVELS_DATA_COLUMNS[level_info.index(car)]
-                x, y, r = map(int, car.split(' '))
+        for color in level_info_dict:
+            if isinstance(level_info_dict[color], str):
+                x, y, r = map(int, level_info_dict[color].split(' '))
                 self.cars_dict[color] = Car(self, color, (x, y), r)
 
     def _clear_board(self):
@@ -50,14 +44,9 @@ class Board(tk.Frame):
 
     def check_win(self):
         if self.square_dict[(2, 5)].color == 'red':
-            self.cur.execute(f"""select user_id FROM user_level_passed
-                                 WHERE user_id = {self.user_id} and
-                                 level_id = {self.level_id}""")
-            if len(self.cur.fetchall()) == 0:
-                self.cur.execute(f"""INSERT INTO user_level_passed
-                                VALUES(
-                                {self.user_id},
-                                {self.level_id}
-                                )""")
-                self.con.commit()
+            passed_levels_list = requests.get(f"https://2rc2iohsvl.execute-api.us-east-2.amazonaws.com/test/passed_levels?user_id={self.user_id}").json()
+
+            if self.level not in passed_levels_list:
+                requests.post(f"https://2rc2iohsvl.execute-api.us-east-2.amazonaws.com/test/passed_levels?user_id={self.user_id}&level_id={self.level_id}")
+
             self.master.winning_screen(self.user_id, self)
