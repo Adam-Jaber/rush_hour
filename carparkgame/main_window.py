@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from login_screen import LoginScreen
 from signup_screen import SignupScreen
@@ -39,8 +40,8 @@ class MainWindow(tk.Tk):
         winning_frame = tk.Frame(self)
         winning_frame.pack(fill='both')
         canvas = tk.Canvas(winning_frame)
-        open("you_go_girl.gif", 'r')
-        win_gif = tk.PhotoImage(file="you_go_girl.gif")
+        game_location = os.path.dirname(__file__)
+        win_gif = tk.PhotoImage(file=f"{game_location}/you_go_girl.gif")
         canvas.create_image(0, 0, image=win_gif)
         canvas.pack()
         home_button = tk.Button(winning_frame, text="Return to home screen",
